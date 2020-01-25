@@ -20,28 +20,25 @@ using namespace std;
 typedef long long ll;
 
 int n,m,k;
-const ll inf = 1e18;
-vector<vector<pair<ll,ll> > > edges;
+const int inf = 1e9;
+vector<vector<pair<int,int> > > edges;
 vector<bool> vis;
-vector<ll> ans;
+vector<int> ans;
 
-void path(int u){
-  vector<ll> dist(n,inf);
-  vector<bool> reach(n,false);
-  priority_queue<pair<ll,int>, vector<pair<ll,int> >, greater<pair<ll,int> > > q;
-  q.push(m_p(0,u));
+void dijkstra(int u){
+  priority_queue<pair<int,int>, vector<pair<int,int> >, greater<pair<int,int> > > q;
+  ans[u] = 0;
+  q.push({0,u});
   while(!q.empty()){
     int cur = q.top().second;
-    ll w = q.top().first;
     q.pop();
-    if(!reach[cur]){
-      reach[cur] = true;
-      dist[cur] = w;
-      if(w && !vis[cur]) ans.p_b(w);
-      FORN(i,0,edges[cur].size()){
-	int d = edges[cur][i].first;
-	ll t = edges[cur][i].second;
-	if(!reach[d]) q.push(m_p(t + w,d));
+    if(vis[cur]) continue;
+    vis[cur] = true;
+    for(auto e : edges[cur]){
+      int b = e.first, w = e.second;
+      if(ans[cur] + w < ans[b]){
+	ans[b] = ans[cur] + w;
+	q.push({ans[b], b});
       }
     }
   }
@@ -50,27 +47,15 @@ void path(int u){
 int main(){
   ios_base::sync_with_stdio(false); cin.tie(NULL);
   cin>>n>>m>>k;
-  vector<vector<ll> > v(m,vector<ll>(3));
-  edges = vector<vector<pair<ll,ll> > > (n);
-  FORN(i,0,m) {
-    cin>>v[i][1]>>v[i][2]>>v[i][0];
-    v[i][1]--;
-    v[i][2]--;
-  }
-  sort(v.begin(),v.end());
-  FORN(i,0,min(m,k)){
-    int a = v[i][2];
-    int b = v[i][1];
-    edges[a].p_b(m_p(b,v[i][0]));
-    edges[b].p_b(m_p(a,v[i][0]));
-  }
+  edges = vector<vector<pair<int,int> > > (n);
   vis = vector<bool> (n,false);
-  FORN(i,0,n) {
-    if(edges[i].size()){
-      vis[i] = true;
-      path(i);
-    }
+  ans = vector<int> (n,inf);
+  FORN(i,0,m){
+    int a,b,c;
+    cin>>a>>b>>c;
+    a--, b--;
+    edges[a].emplace_back(b,c);
   }
-  sort(ans.begin(),ans.end());
-  cout<<ans[k-1]<<endl;
+  dijkstra(--k);
+  PRINTVEC(ans);
 }

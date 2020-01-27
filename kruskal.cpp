@@ -41,6 +41,7 @@ int main(){
   FORN(i,0,n) parent[i] = i, rnk[i] = 1;
   FORN(i,0,m){
     int a, b, w;
+    a--, b--;
     cin>>a>>b>>w;
     edges.emplace_back(w,a,b);
   }

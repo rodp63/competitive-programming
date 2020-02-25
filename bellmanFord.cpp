@@ -17,28 +17,28 @@ using namespace std;
 #define FORN(i,m,n) for(ll i=(m); i<ll(n); i++)
 #define PRINTVEC(v) FORN(i,0,v.size()) cout<<v[i]<<" "; cout<<endl
 #define PRINTMAT(m) FORN(j,0,m.size()) {PRINTVEC(m[j]);}
-#define PB(x) push_back(x)
-#define MP(a,b) make_pair(a,b)
 typedef long long ll;
- 
+
+const int inf = 1e9;
+
 int main(){
   ios_base::sync_with_stdio(false); cin.tie(NULL);
-  int n,m,u; cin>>n>>m>>u; u--;
-  const int inf = 1e9;
+  int n, m, u;
+  cin>>n>>m>>u; //n -> nodes, m -> edges, u -> head
   vector<tuple<int,int,int> > edges;
   FORN(i,0,m){
-    int a,b,c; cin>>a>>b>>c;
+    int a, b, w; cin>>a>>b>>w;
     a--, b--;
-    edges.emplace_back(a,b,c);
-    edges.emplace_back(b,a,c);
+    edges.emplace_back(a,b,w);
+    edges.emplace_back(b,a,w);
   }
-  vector<int> distance(n,inf);
-  distance[u] = 0;
+  vector<int> distance(n, inf);
+  distance[--u] = 0;
   bool flag = true;
   while(flag){
     flag = false;
     for(auto e : edges){
-      int a,b,w,cur;
+      int a, b, w, cur;
       tie(a,b,w) = e;
       cur = distance[a] + w;
       if(cur < distance[b]){

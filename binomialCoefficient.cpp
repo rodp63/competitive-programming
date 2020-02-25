@@ -21,34 +21,36 @@ using namespace std;
 typedef long long ll;
 typedef long double ld;
 
-const ll mod = 1e9 + 7;
-vector<ll> f(1e6);
-
+const int mod = 1e9 + 7;
+ 
+ll fact(ll a){
+  ll ans = 1;
+  for(int i = 2; i <= a; i++) ans = (ans * i) % mod;  
+  return ans;
+}
+ 
 ll exp(ll a, ll b){
   ll ans = 1;
-  a = a % mod;
-  while (b > 0){
-    if ((b & 1) == 1){
-      ans *= a;
-      ans = ans % mod;
-    }
-    a *= a;
-    a = a % mod;
+  a %= mod;
+  while(b){
+    if ((b & 1) == 1) ans = (ans * a) % mod;
+    a = (a * a) % mod;
     b >>= 1;
   }
   return ans;
 }
-
-ll C(int k, int n){
-  return f[n] * exp(f[k],mod-2) % mod * exp(f[n - k],mod-2) % mod;
+ 
+ll solve(ll k, ll n){
+  ll x = max(n - k, k);
+  ll ans = 1;
+  for(ll i = x + 1; i <= n; i++) ans = (ans * i) % mod;
+  ans = (ans * exp(fact(n - x), mod - 2)) % mod;
+  return ans;
 }
-
+ 
 int main(){
-  ios_base::sync_with_stdio(false); cin.tie(NULL);
-  f[0] = 1;
-  for (int i = 1; i <= 1e6; i++) {
-    f[i] = f[i - 1] * i % mod;
-  }
-  int a, b; cin>>a>>b;
-  cout<<C(a,b)<<endl;
+  ll n, a, ans;
+  cin>>n>>a;
+  ans = solve(a, n);
+  cout<<ans<<endl;
 }

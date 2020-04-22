@@ -35,7 +35,7 @@ int main(){
   cin>>q;
   while(q--){
     int a, b, j; cin>>a>>b;
-    j = log2(b - a + 1);
+    j = 31 - __builtin_clz(b - a + 1);
     cout<<min(table[a][j], table[b-(1<<j)+1][j])<<endl;
     /*
     ll sum = 0;

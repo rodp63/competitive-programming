@@ -32,10 +32,7 @@ void dfs(int u, int p = -1, int d = 0){
     if(e == p) continue;
     dfs(e, u, d+1);
   }
-  if(d > ans){
-    ans = d;
-    x = u;
-  }
+  if(d > ans) ans = d, x = u;
 }
 
 int main(){
